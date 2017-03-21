@@ -16,26 +16,23 @@
           <div>
             <h4>Hotels</h4>
             <select data-type="hotel" id="hotel-choices">
-              <option>Wyndham Grand Chicago Riverfront</option>
               <option>...</option>
             </select>
-            <button data-action="add" class="btn btn-primary btn-circle pull-right">+</button>
+            <button id="hotel-add-btn" data-action="add" class="btn btn-primary btn-circle pull-right">+</button>
           </div>
           <div>
             <h4>Restaurants</h4>
             <select data-type="restaurant" id="restaurant-choices">
-              <option>Alinea</option>
               <option>...</option>
             </select>
-            <button data-action="add" class="btn btn-primary btn-circle pull-right">+</button>
+            <button id="restaurant-add-btn" data-action="add" class="btn btn-primary btn-circle pull-right">+</button>
           </div>
           <div>
             <h4>Activities</h4>
             <select data-type="activity" id="activity-choices">
-              <option>Shedd Aquarium</option>
               <option>...</option>
             </select>
-            <button data-action="add" class="btn btn-primary btn-circle pull-right">+</button>
+            <button id="activity-add-btn" data-action="add" class="btn btn-primary btn-circle pull-right">+</button>
           </div>
         </div>
       </div>
@@ -59,27 +56,24 @@
         <div class="panel-body" id="itinerary">
           <div>
             <h4>My Hotel</h4>
-            <ul class="list-group">
+            <ul id="chosen-hotels" class="list-group">
               <div class="itinerary-item">
-                <span class="title">Wyndham Grand Chicago Riverfront</span>
                 <button class="btn btn-xs btn-danger remove btn-circle">x</button>
               </div>
             </ul>
           </div>
           <div>
             <h4>My Restaurants</h4>
-            <ul class="list-group">
+            <ul id='chosen-restaurants' class="list-group">
               <div class="itinerary-item">
-                <span class="title">Alinea</span>
                 <button class="btn btn-xs btn-danger remove btn-circle">x</button>
               </div>
             </ul>
           </div>
           <div>
             <h4>My Activities</h4>
-            <ul class="list-group">
+            <ul id='chosen-activities' class="list-group">
               <div class="itinerary-item">
-                <span class="title">Shedd Aquarium</span>
                 <button class="btn btn-xs btn-danger remove btn-circle">x</button>
               </div>
             </ul>
@@ -89,4 +83,12 @@
     </div>
   </div>
 </div>
+
+<script>
+  var hotels = {{ hotels | dump | safe }};
+  var restaurants = {{ restaurants | dump | safe }};
+  var activities = {{ activities | dump | safe }};
+</script>
+
 {% endblock %}
+
