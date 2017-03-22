@@ -140,3 +140,9 @@ h3 {
     vertical-align: middle; }
   #day-title > .remove {
     margin-left: 1em; }
+
+.itinerary li {
+  list-style: none; }
+
+.remove {
+  margin-left: 5px; }

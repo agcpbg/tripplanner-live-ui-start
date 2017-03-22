@@ -1,6 +1,21 @@
+////BUG TO FIX: SOMETIMES MARKER DOES NOT GO AWAY AFTER REMOVE
+
+
+
+
+ var markerArr = [];
+
 function initializeMap (){
 
-  var fullstackAcademy = new google.maps.LatLng(41.8884073, -87.6293817);
+  var mapCenter;
+
+  if (markerArr.length === 0) {
+    mapCenter = new google.maps.LatLng(41.8884073, -87.6293817); 
+  } else {
+    mapCenter = {lat: markerArr[markerArr.length - 1][1][0], lng:markerArr[markerArr.length - 1][1][1]};
+  }
+
+
 
   var styleArr = [{
     featureType: 'landscape',
@@ -34,7 +49,7 @@ function initializeMap (){
   var mapCanvas = document.getElementById('map-canvas');
 
   var currentMap = new google.maps.Map(mapCanvas, {
-    center: fullstackAcademy,
+    center: mapCenter,
     zoom: 13,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     styles: styleArr
@@ -56,7 +71,6 @@ function initializeMap (){
     marker.setMap(currentMap);
   }
 
-  console.log(markerArr);
   markerArr.forEach(marker => {
     drawMarker(marker[0], marker[1]);
   })
@@ -101,15 +115,34 @@ function activityIndexFinder (activityNameStr) {
   }
 }
 
-var markerArr = [];
+
+
+$('#day-add').on('click', function(){
+  var numOfDay = +$(this).prev().text() + 1;
+  $(this).before('<span><button class="btn btn-circle day-btn current-day">'+numOfDay+'</button></span>');
+})
+
+
+
+$('#itinerary').on('click', 'button', function(){
+  var indexToRemove = +$(this).data('markerindex');
+  $(this).closest('p').remove();
+  markerArr.splice(indexToRemove, 1);
+  console.log("MARKER ARR: ", markerArr);
+  initializeMap();
+})
+
+
 
 $('#hotel-add-btn').on('click', function() {
   let selectedHotel = $('#hotel-choices').val();
   let hotelIndex = hotelIndexFinder(selectedHotel);
   var lat = hotels[hotelIndex].place.location[0];
   var lng = hotels[hotelIndex].place.location[1];
+  var markerIndex = markerArr.length;
+  var newButton = '<button class="btn btn-xs btn-danger remove btn-circle" data-markerindex=' + markerIndex + '>x</button>';
   markerArr.push(['hotel', [lat, lng]]);
-  $('#chosen-hotels').append('<p>' + selectedHotel + '</p>');
+  $('#chosen-hotels').append('<p>' + selectedHotel + '<span>' + newButton + '</span></p>');
   initializeMap();
 });
 
@@ -119,8 +152,11 @@ $('#restaurant-add-btn').on('click', function() {
   let restaurantIndex = restaurantIndexFinder(selectedRestaurant);
   var lat = restaurants[restaurantIndex].place.location[0];
   var lng = restaurants[restaurantIndex].place.location[1];
+  var markerIndex = markerArr.length;
+  var newButton = '<button class="btn btn-xs btn-danger remove btn-circle" data-markerIndex=' + markerIndex + '>x</button>';
+
   markerArr.push(['restaurant', [lat, lng]]);
-  $('#chosen-restaurants').append('<p>' + selectedRestaurant + '</p>');
+  $('#chosen-restaurants').append('<p>' + selectedRestaurant + '<span>' + newButton + '</span></p>');
   initializeMap();
 });
 
@@ -129,7 +165,11 @@ $('#activity-add-btn').on('click', function() {
   let activityIndex = activityIndexFinder(selectedActivity);
   var lat = activities[activityIndex].place.location[0];
   var lng = activities[activityIndex].place.location[1];
+  var markerIndex = markerArr.length;
+  var newButton = '<button class="btn btn-xs btn-danger remove btn-circle" data-markerIndex=' + markerIndex + '>x</button>';
+
+
   markerArr.push(['activity', [lat, lng]]);
-  $('#chosen-activities').append('<p>' + selectedActivity + '</p>');
+  $('#chosen-activities').append('<p>' + selectedActivity + '<span>' + newButton + '</span></p>');
   initializeMap();
 });
